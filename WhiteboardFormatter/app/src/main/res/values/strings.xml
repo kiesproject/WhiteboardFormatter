@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">WhiteboardFormatter</string>
+    <string name="alert_dialog_message_for_permission">アプリがこの操作を実行するには次の権限の許可が必要です。\n
+        カメラ\nストレージ\n\n権限を許可するには、[アプリ情報]→[許可]に移動してください。</string>>
+    <string name="button_name_app_info">アプリ情報</string>>
 </resources>
