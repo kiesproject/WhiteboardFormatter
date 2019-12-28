@@ -11,77 +11,79 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/save_share_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:text="share"
-            app:layout_constraintBottom_toTopOf="@+id/floatingActionButton"
+            app:layout_constraintBottom_toTopOf="@+id/save_confirm_fab"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline" />
+            app:layout_constraintStart_toStartOf="@+id/save_gridline" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/save_copy_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:text="Copy"
-            app:layout_constraintBottom_toTopOf="@+id/button"
+            app:layout_constraintBottom_toTopOf="@+id/save_share_button"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline" />
+            app:layout_constraintStart_toStartOf="@+id/save_gridline" />
 
         <ScrollView
+            android:id="@+id/save_preview_scrollview"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintEnd_toStartOf="@+id/save_gridline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
+                android:id="@+id/save_preview_linearlayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
         </ScrollView>
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
+            android:id="@+id/save_gridline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.75" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/save_back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Back to Cam"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="@+id/save_gridline"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Switch
-            android:id="@+id/switch1"
+            android:id="@+id/save_file_type_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            app:layout_constraintBottom_toTopOf="@+id/button2"
-            app:layout_constraintEnd_toEndOf="@+id/button2"
-            app:layout_constraintStart_toStartOf="@+id/button2" />
+            app:layout_constraintBottom_toTopOf="@+id/save_copy_button"
+            app:layout_constraintEnd_toEndOf="@+id/save_copy_button"
+            app:layout_constraintStart_toStartOf="@+id/save_copy_button" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/save_file_type_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/switch1"
-            app:layout_constraintEnd_toEndOf="@+id/switch1"
-            app:layout_constraintStart_toStartOf="@+id/switch1"
+            app:layout_constraintBottom_toTopOf="@+id/save_file_type_switch"
+            app:layout_constraintEnd_toEndOf="@+id/save_file_type_switch"
+            app:layout_constraintStart_toStartOf="@+id/save_file_type_switch"
             tools:text="mdファイル" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButton"
+            android:id="@+id/save_confirm_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
