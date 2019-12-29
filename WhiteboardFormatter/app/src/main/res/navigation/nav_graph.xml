@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    app:startDestination="@id/editFragment">
+
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="com.example.whiteboardformatter.edit_page.EditFragment"
+        android:label="EditFragment" />
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.example.whiteboardformatter.list_page.ListFragment"
+        android:label="ListFragment" />
+    <fragment
+        android:id="@+id/saveFragment"
+        android:name="com.example.whiteboardformatter.save_page.SaveFragment"
+        android:label="SaveFragment" />
+</navigation>
