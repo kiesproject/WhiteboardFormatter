@@ -11,7 +11,9 @@ import androidx.appcompat.app.AlertDialog
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.OnPermissionDenied
+import permissions.dispatcher.RuntimePermissions
 
+@RuntimePermissions
 class PermissionCheckActivity : AppCompatActivity() {
 
     var isWrtieExternlStorageAllowed = false
@@ -20,32 +22,13 @@ class PermissionCheckActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_permission_check)
+        setContentView(R.layout.activity_main)
         startPermissionCheck()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         onRequestPermissionsResult(requestCode, permissions, grantResults) //29行目、参考サイトは"permissions,"なし。
-    }
-
-    //以下STRAGE
-    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    fun showWriteExternalStorage() {
-        isWrtieExternlStorageAllowed = true
-        showWriteExternalStorage() //36,42,48行目共に参考記事は"showCameraWithPermissionCheck()"
-    }
-
-    @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    fun onWeiteExternalStrageDenied(){
-        isWrtieExternlStorageAllowed = false
-        showWriteExternalStorage()
-    }
-
-    @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    fun onWriteExternalStorageNeverAskAgain(){
-        isWrtieExternlStorageAllowed = false
-        showWriteExternalStorage()
     }
 
     //以下CAMERA
@@ -69,7 +52,7 @@ class PermissionCheckActivity : AppCompatActivity() {
 
     private fun startNextActivity() {
 
-        if ((isCameraAllowed == true) && (isWrtieExternlStorageAllowed == true)) {
+        if (isCameraAllowed == true) {
 
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
@@ -78,8 +61,6 @@ class PermissionCheckActivity : AppCompatActivity() {
 
             if (!isCameraAllowed)
                 Log.d("CAM", "No")
-            if (!isWrtieExternlStorageAllowed)
-                Log.d("STO", "No")
 
             AlertDialog.Builder(this)
                 .setPositiveButton(android.R.string.cancel) { _, _ ->
