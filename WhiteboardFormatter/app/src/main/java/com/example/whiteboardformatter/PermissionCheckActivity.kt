@@ -16,15 +16,14 @@ import permissions.dispatcher.RuntimePermissions
 @RuntimePermissions
 class PermissionCheckActivity : AppCompatActivity() {
 
-    var isWrtieExternlStorageAllowed = false
     var isCameraAllowed = false
     val REQEST_CODE_MAGIC = 1212
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        startPermissionCheck()
-    }
+        showCameraWithPermissionCheck()
+   }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -78,13 +77,4 @@ class PermissionCheckActivity : AppCompatActivity() {
 
         }
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
-        super.onActivityResult(requestCode, resultCode, intent)
-
-        if (requestCode == REQEST_CODE_MAGIC){
-            startPermissionCheck()
-        }
-    }
-
 }
