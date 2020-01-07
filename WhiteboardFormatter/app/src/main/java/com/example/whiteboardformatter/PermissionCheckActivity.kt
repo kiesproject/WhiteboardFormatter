@@ -27,7 +27,7 @@ class PermissionCheckActivity : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        onRequestPermissionsResult(requestCode, permissions, grantResults) //29行目、参考サイトは"permissions,"なし。
+        onRequestPermissionsResult(requestCode, grantResults) //29行目、参考サイトは"permissions,"なし。
     }
 
     //以下CAMERA
