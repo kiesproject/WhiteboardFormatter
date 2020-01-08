@@ -1,22 +1,25 @@
 package com.example.whiteboardformatter.edit_page
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.MarginLayoutParams
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.whiteboardformatter.databinding.FragmentEditBinding
 import kotlinx.android.synthetic.main.fragment_edit.*
 
+
 class EditFragment : Fragment(), View.OnTouchListener {
 
     private lateinit var fragmentEditBinding: FragmentEditBinding
     private lateinit var globalLayoutListener: OnGlobalLayoutListener
+
+    private var oldX:Int = 0
+    private var oldY:Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,6 +31,7 @@ class EditFragment : Fragment(), View.OnTouchListener {
         return fragmentEditBinding.root
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -35,26 +39,20 @@ class EditFragment : Fragment(), View.OnTouchListener {
         val textView2 = setText(view, "World", 150F,500, 500)
 
         textView1.setOnTouchListener(this)
+        textView2.setOnTouchListener(this)
     }
 
-    override fun onTouch(v: View, event: MotionEvent): Boolean {
-        // x,y 位置取得
-        val newDx = event.rawX.toInt()
-        val newDy = event.rawY.toInt()
+    override fun onTouch(view: View, event: MotionEvent): Boolean {
+        val newX = event.rawX.toInt()
+        val newY = event.rawY.toInt()
         when (event.action) {
             MotionEvent.ACTION_MOVE -> {
-                // ACTION_MOVEでの位置
-                // performCheckを入れろと警告が出るので
-                v.performClick()
-                val dx = image_view!!.left + (newDx - preDx)
-                val dy = image_view!!.top + (newDy - preDy)
-                val imgW = dx + image_view!!.width
-                val imgH = dy + image_view!!.height
-                // 画像の位置を設定する
-                image_view!!.layout(dx, dy, imgW, imgH)
-                val str = "dx=$dx\ndy=$dy"
-                textView!!.text = str
-                Log.d("onTouch", "ACTION_MOVE: dx=$dx, dy=$dy")
+                view.performClick()
+                val textX = view.left + (newX - oldX)
+                val textY = view.top + (newY - oldY)
+                val textWidth = textX + view.width
+                val textHeight = textY + view.height
+                view.layout(textX, textY, textWidth, textHeight)
             }
             MotionEvent.ACTION_DOWN -> {
             }
@@ -63,13 +61,13 @@ class EditFragment : Fragment(), View.OnTouchListener {
             else -> {
             }
         }
-        // タッチした位置を古い位置とする
-        preDx = newDx
-        preDy = newDy
+
+        oldX = newX
+        oldY = newY
         return true
     }
 
-    private fun setText(view: View, text: String, textSize: Float, textLeft: Int, textTop: Int) : TextView{
+    private fun setText(view: View, text: String, textSize: Float, textX: Int, textY: Int) : TextView{
         val textView = TextView(view.context).also {
             it.id = View.generateViewId()
             it.text = text
@@ -78,7 +76,7 @@ class EditFragment : Fragment(), View.OnTouchListener {
         }
 
         globalLayoutListener = OnGlobalLayoutListener {
-            textView.layout(textLeft, textTop, textLeft + textView.width, textTop + textView.height)
+            textView.layout(textX, textY, textX + textView.width, textY + textView.height)
             textView.viewTreeObserver.removeOnGlobalLayoutListener(globalLayoutListener)
         }
         textView.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
