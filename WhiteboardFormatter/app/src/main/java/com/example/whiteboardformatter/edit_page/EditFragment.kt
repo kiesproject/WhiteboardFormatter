@@ -2,16 +2,17 @@ package com.example.whiteboardformatter.edit_page
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import com.example.whiteboardformatter.databinding.FragmentEditBinding
 import kotlinx.android.synthetic.main.fragment_edit.*
-
 
 class EditFragment : Fragment(), View.OnTouchListener {
 
@@ -36,6 +37,7 @@ class EditFragment : Fragment(), View.OnTouchListener {
         super.onViewCreated(view, savedInstanceState)
 
         val textView1 = setText(view, "Hello", 100F,100, 100)
+
         val textView2 = setText(view, "World", 150F,500, 500)
 
         textView1.setOnTouchListener(this)
@@ -67,7 +69,9 @@ class EditFragment : Fragment(), View.OnTouchListener {
         return true
     }
 
-    private fun setText(view: View, text: String, textSize: Float, textX: Int, textY: Int) : TextView{
+    private fun setText(view: View, text: String, textSize: Float, textX: Int, textY: Int) : TextView {
+
+
         val textView = TextView(view.context).also {
             it.id = View.generateViewId()
             it.text = text
@@ -80,6 +84,56 @@ class EditFragment : Fragment(), View.OnTouchListener {
             textView.viewTreeObserver.removeOnGlobalLayoutListener(globalLayoutListener)
         }
         textView.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
+
+        val constraintSet = ConstraintSet()
+
+        constraintSet.apply {
+            clone(edit_parent_layout)
+
+            constrainHeight(
+                textView.id,
+                ConstraintSet.WRAP_CONTENT
+            )
+
+            constrainDefaultWidth(
+                textView.id,
+                ConstraintSet.WRAP_CONTENT
+            )
+
+            connect(
+                textView.id,
+                ConstraintSet.BOTTOM,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.BOTTOM,
+                0
+            )
+
+            connect(
+                textView.id,
+                ConstraintSet.LEFT,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.LEFT,
+                0
+            )
+
+            connect(
+                textView.id,
+                ConstraintSet.RIGHT,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.RIGHT,
+                0
+            )
+
+            connect(
+                textView.id,
+                ConstraintSet.TOP,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.TOP,
+                0
+            )
+
+            applyTo(edit_parent_layout)
+        }
 
         return textView
     }
