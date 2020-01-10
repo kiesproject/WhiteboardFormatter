@@ -22,7 +22,11 @@ import java.util.*
                 var height: Int
         )
 )
-
+@Entity(foreignKeys = arrayOf(ForeignKey(parentTable = @Table(name="Whiteboard"),
+                                         childTable = @Table(name="Text"),
+                                         parentColumn = @Column(name="Id")
+                                         childColumn = @Column(name="WhiteboardId")))
+       )
 
 
 
