@@ -15,17 +15,17 @@ interface TableDao{
     fun getById(whiteboardId:Long):LiveData<List>
 
     @Insert
-    fun insert(UpperCamel text:Text)
+    fun insert(vararg text:Text)
 
     @Insert
-    fun insert(Whiteboard:text):Whiteboard<String>
+    fun insert(whiteboard:Whiteboard):Long
 
     @Update
-    fun update(UpperCamel text:Text)
+    fun update(text:Text)
 
-    @Query("DELETE FROM Table WHERE whiteboardId=(:WhiteboardId)")
-    fun delete(WhiteboardId:String)
+    @Query("DELETE FROM Text WHERE whiteboardId=(:WhiteboardId)")
+    fun delete(WhiteboardId:Long)
 
-    @Query("DELETE FROM Table WHERE id=(:textId)")
+    @Query("DELETE FROM Text WHERE id=(:textId)")
     fun delete(textId:Long)
 }
