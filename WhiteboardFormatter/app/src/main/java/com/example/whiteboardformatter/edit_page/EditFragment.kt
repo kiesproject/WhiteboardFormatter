@@ -2,11 +2,8 @@ package com.example.whiteboardformatter.edit_page
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintSet
@@ -19,8 +16,13 @@ class EditFragment : Fragment(), View.OnTouchListener {
     private lateinit var fragmentEditBinding: FragmentEditBinding
     private lateinit var globalLayoutListener: OnGlobalLayoutListener
 
-    private var oldX:Int = 0
-    private var oldY:Int = 0
+    private lateinit var textView1:TextView
+
+    private var oldX: Int = 0
+    private var oldY: Int = 0
+
+    private var mScaleFactor = 1f
+    private lateinit var mScaleDetector:ScaleGestureDetector
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,15 +38,44 @@ class EditFragment : Fragment(), View.OnTouchListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val textView1 = setText(view, "Hello", 100F,100, 100)
+        textView1 = setText(view, "Hello", 100F, 100, 100)
 
-        val textView2 = setText(view, "World", 150F,500, 500)
+        val textView2 = setText(view, "World", 150F, 500, 500)
 
         textView1.setOnTouchListener(this)
         textView2.setOnTouchListener(this)
+
+        mScaleDetector = ScaleGestureDetector(context, scaleListener)
     }
 
+    private val scaleListener = object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+
+        override fun onScale(detector: ScaleGestureDetector): Boolean {
+            mScaleFactor *= detector.scaleFactor
+
+            // Don't let the object get too small or too large.
+//            mScaleFactor = Math.max(0.1f, Math.min(mScaleFactor, 5.0f))
+
+            textView1.setScaleX(mScaleFactor)
+            textView1.setScaleY(mScaleFactor)
+
+            return true
+        }
+    }
+
+//    override fun onTouchEvent(ev: MotionEvent): Boolean {
+//        // Let the ScaleGestureDetector inspect all events.
+//        mScaleDetector.onTouchEvent(ev)
+//        return true
+//    }
+
+//    fun onTouchEvent(event: MotionEvent?): Boolean { //re-route the Touch Events to the ScaleListener class
+//        detector.onTouchEvent(event)
+//        return super.onTouchEvent(event)
+//    }
+
     override fun onTouch(view: View, event: MotionEvent): Boolean {
+        mScaleDetector.onTouchEvent(event)
         val newX = event.rawX.toInt()
         val newY = event.rawY.toInt()
         when (event.action) {
@@ -69,7 +100,13 @@ class EditFragment : Fragment(), View.OnTouchListener {
         return true
     }
 
-    private fun setText(view: View, text: String, textSize: Float, textX: Int, textY: Int) : TextView {
+    private fun setText(
+        view: View,
+        text: String,
+        textSize: Float,
+        textX: Int,
+        textY: Int
+    ): TextView {
 
 
         val textView = TextView(view.context).also {
