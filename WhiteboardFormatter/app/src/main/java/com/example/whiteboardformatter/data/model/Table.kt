@@ -3,14 +3,16 @@ package com.example.whiteboardformatter.data.model
 import androidx.room.*
 import java.util.*
 
-@Entity(
-        data class WhiteboardEntity constructor(
-                @PrimaryKey(autoGenerate = true)
-                var id : Long=0,
-                val timestump : Long = Date().time
-        )
+@Entity
+data class WhiteboardEntity constructor(
+        @PrimaryKey(autoGenerate = true)
+        var id : Long=0,
+        val timestump : Long = Date().time
 )
-@Entity(
+@Entity(foreignKeys = arrayOf(ForeignKey(parentTable = @Table(name="Whiteboard"),
+        childTable = @Table(name="Text"),
+        parentColumn = @Column(name="Id")
+        childColumn = @Column(name="WhiteboardId")))
         data class Text constructor(
                 @PrimaryKey(autoGenerate = true)
                 var id: Long = 0,
@@ -22,11 +24,6 @@ import java.util.*
                 var height: Int
         )
 )
-@Entity(foreignKeys = arrayOf(ForeignKey(parentTable = @Table(name="Whiteboard"),
-                                         childTable = @Table(name="Text"),
-                                         parentColumn = @Column(name="Id")
-                                         childColumn = @Column(name="WhiteboardId")))
-       )
 
 
 
