@@ -14,7 +14,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
         ),version = 1
 )
 abstract class AppDatabase:RoomDatabase(){
-    abstract fun dao():Dao()
+    abstract fun dao():TableDao()
 
     companion object {
         @Volatile
