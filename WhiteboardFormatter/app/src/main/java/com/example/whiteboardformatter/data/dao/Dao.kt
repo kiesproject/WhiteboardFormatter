@@ -9,10 +9,10 @@ import com.example.yabamiru.data.model.TaskAndTaskTags
 interface TableDao{
 
     @Query("SELECT * FROM whiteboard")
-    fun getAll():LiveData<List>
+    fun getAll():LiveData<List<Whiteboard>>
 
     @Query("SELECT * FROM Text WHERE whiteboardId=(:whiteboardId)")
-    fun getById(whiteboardId:Long):LiveData<List>
+    fun getById(whiteboardId:Long):LiveData<List<Text>>
 
     @Insert
     fun insert(vararg text:Text)
