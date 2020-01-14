@@ -1,40 +1,29 @@
-//package com.example.whiteboardformatter
-//
-//import androidx.lifecycle.ViewModel
-//import androidx.lifecycle.ViewModelProvider
-//import com.amebaownd.pikohan_nwiatori.healthmanagementapp.data.repository.DishRepository
-//import com.amebaownd.pikohan_nwiatori.healthmanagementapp.data.repository.FoodStuffRepository
-//import com.amebaownd.pikohan_nwiatori.healthmanagementapp.dish.DishesViewModel
-//import com.amebaownd.pikohan_nwiatori.healthmanagementapp.dish.addEditDish.AddEditDishViewModel
-//import com.amebaownd.pikohan_nwiatori.healthmanagementapp.dish.detailDish.DetailDishViewModel
-//import com.amebaownd.pikohan_nwiatori.healthmanagementapp.foodstaff.FoodStuffViewModel
-//import com.amebaownd.pikohan_nwiatori.healthmanagementapp.foodstaff.addEditFoodStuff.AddEditFoodStuffViewModel
-//import com.amebaownd.pikohan_nwiatori.healthmanagementapp.foodstaff.detailFoodStuff.DetailFoodStuffViewModel
-//import java.lang.IllegalArgumentException
-//
-//@Suppress("UNCHECKED_CAST")
-//class ViewModelFactory (
-//    private val foodStuffRepository: FoodStuffRepository,
-//    private val dishRepository: DishRepository
-//):ViewModelProvider.NewInstanceFactory(){
-//
-//    override fun <T: ViewModel> create(modelClass: Class<T>)=
-//        with(modelClass){
-//            when{
-//                isAssignableFrom(FoodStuffViewModel::class.java)->
-//                    FoodStuffViewModel(foodStuffRepository)
-//                isAssignableFrom(AddEditFoodStuffViewModel::class.java)->
-//                    AddEditFoodStuffViewModel(foodStuffRepository)
-//                isAssignableFrom(DetailFoodStuffViewModel::class.java)->
-//                    DetailFoodStuffViewModel(foodStuffRepository)
-//                isAssignableFrom(DishesViewModel::class.java)->
-//                    DishesViewModel(dishRepository)
-//                isAssignableFrom(AddEditDishViewModel::class.java)->
-//                    AddEditDishViewModel(dishRepository)
-//                isAssignableFrom(DetailDishViewModel::class.java)->
-//                    DetailDishViewModel(dishRepository)
-//                else->
-//                    throw IllegalArgumentException("Unknown ViewModelclass ${modelClass}")
-//            }
-//        }  as T
-//}
+package com.example.whiteboardformatter
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.example.whiteboardformatter.data.repository.Repository
+import com.example.whiteboardformatter.edit_page.EditViewModel
+import com.example.whiteboardformatter.list_page.ListViewModel
+import com.example.whiteboardformatter.save_page.SaveViewModel
+import java.lang.IllegalArgumentException
+
+@Suppress("UNCHECKED_CAST")
+class ViewModelFactory (
+    private val repository: Repository
+):ViewModelProvider.NewInstanceFactory(){
+
+    override fun <T: ViewModel> create(modelClass: Class<T>)=
+        with(modelClass){
+            when{
+                isAssignableFrom(ListViewModel::class.java)->
+                    ListViewModel(repository)
+                isAssignableFrom(EditViewModel::class.java)->
+                    EditViewModel(repository)
+                isAssignableFrom(SaveViewModel::class.java)->
+                    SaveViewModel(repository)
+                else->
+                    throw IllegalArgumentException("Unknown ViewModelclass ${modelClass}")
+            }
+        }  as T
+}

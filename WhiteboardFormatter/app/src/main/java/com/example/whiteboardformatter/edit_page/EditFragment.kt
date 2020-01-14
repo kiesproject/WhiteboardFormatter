@@ -7,11 +7,21 @@ import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintSet
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.example.whiteboardformatter.databinding.FragmentEditBinding
+import com.example.whiteboardformatter.save_page.SaveViewModel
+import com.example.whiteboardformatter.util.getViewModelFactory
 import com.example.whiteboardformatter.databinding.FragmentEditBinding
 import kotlinx.android.synthetic.main.fragment_edit.*
 
 class EditFragment : Fragment(), View.OnTouchListener {
+    private val viewModel : EditViewModel by viewModels { getViewModelFactory() }
+    private lateinit var fragmentEditBinding:FragmentEditBinding
 
     private lateinit var fragmentEditBinding: FragmentEditBinding
     private lateinit var globalLayoutListener: OnGlobalLayoutListener
@@ -178,4 +188,22 @@ class EditFragment : Fragment(), View.OnTouchListener {
     companion object {
         private const val TAG = "EditFragment"
     }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        fragmentEditBinding = FragmentEditBinding.inflate(inflater,container).apply {
+            viewModel = this@EditFragment.viewModel
+            lifecycleOwner = viewLifecycleOwner
+        }
+        return fragmentEditBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+    }
+
+    private fun navigateToSaveFragment(){
+
+    }
+
 }
