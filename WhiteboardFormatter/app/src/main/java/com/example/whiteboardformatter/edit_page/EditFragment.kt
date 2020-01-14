@@ -1,8 +1,9 @@
 package com.example.whiteboardformatter.edit_page
 
 import android.annotation.SuppressLint
+import android.os.Bundle
+import android.util.Log
 import android.view.*
-import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintSet
@@ -16,6 +17,9 @@ import com.example.whiteboardformatter.save_page.SaveViewModel
 import com.example.whiteboardformatter.util.getViewModelFactory
 import com.example.whiteboardformatter.databinding.FragmentEditBinding
 import kotlinx.android.synthetic.main.fragment_edit.*
+import kotlin.math.max
+import kotlin.math.min
+
 
 class EditFragment : Fragment(), View.OnTouchListener {
     private val viewModel : EditViewModel by viewModels { getViewModelFactory() }
@@ -24,12 +28,17 @@ class EditFragment : Fragment(), View.OnTouchListener {
     private lateinit var globalLayoutListener: OnGlobalLayoutListener
 
     private lateinit var textView1:TextView
+    private lateinit var textView2:TextView
+
+    private var touchFlg = false
 
     private var oldX: Int = 0
     private var oldY: Int = 0
 
-    private var mScaleFactor = 1f
-    private lateinit var mScaleDetector:ScaleGestureDetector
+    private lateinit var touchTextView: TextView
+
+    private var scaleFactor = 1f
+    private lateinit var scaleDetector: ScaleGestureDetector
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,12 +61,12 @@ class EditFragment : Fragment(), View.OnTouchListener {
 
         textView1 = setText(view, "Hello", 100F, 100, 100)
 
-        val textView2 = setText(view, "World", 150F, 500, 500)
+        textView2 = setText(view, "World", 150F, 500, 500)
 
         textView1.setOnTouchListener(this)
         textView2.setOnTouchListener(this)
 
-        mScaleDetector = ScaleGestureDetector(context, scaleListener)
+        scaleDetector = ScaleGestureDetector(context, scaleListener)
     }
 
 //    private fun navigateToSaveFragment(){
@@ -67,45 +76,46 @@ class EditFragment : Fragment(), View.OnTouchListener {
     private val scaleListener = object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
 
         override fun onScale(detector: ScaleGestureDetector): Boolean {
-            mScaleFactor *= detector.scaleFactor
+            scaleFactor *= detector.scaleFactor
 
             // Don't let the object get too small or too large.
-//            mScaleFactor = Math.max(0.1f, Math.min(mScaleFactor, 5.0f))
+            scaleFactor = max(0.1f, min(scaleFactor, 5.0f))
 
-            textView1.setScaleX(mScaleFactor)
-            textView1.setScaleY(mScaleFactor)
+            touchTextView.scaleX = scaleFactor
+            touchTextView.scaleY = scaleFactor
+            Log.d(TAG, touchTextView.scaleX.toString())
 
             return true
         }
     }
 
-//    override fun onTouchEvent(ev: MotionEvent): Boolean {
-//        // Let the ScaleGestureDetector inspect all events.
-//        mScaleDetector.onTouchEvent(ev)
-//        return true
-//    }
-
-//    fun onTouchEvent(event: MotionEvent?): Boolean { //re-route the Touch Events to the ScaleListener class
-//        detector.onTouchEvent(event)
-//        return super.onTouchEvent(event)
-//    }
-
     override fun onTouch(view: View, event: MotionEvent): Boolean {
-        mScaleDetector.onTouchEvent(event)
+        scaleDetector.onTouchEvent(event)
+
+        touchTextView = view as TextView
+
         val newX = event.rawX.toInt()
         val newY = event.rawY.toInt()
+
         when (event.action) {
+
             MotionEvent.ACTION_MOVE -> {
-                view.performClick()
-                val textX = view.left + (newX - oldX)
-                val textY = view.top + (newY - oldY)
-                val textWidth = textX + view.width
-                val textHeight = textY + view.height
-                view.layout(textX, textY, textWidth, textHeight)
+                if(!touchFlg){
+                    touchFlg = true
+                    touchTextView.performClick()
+                    val textX = touchTextView.left + (newX - oldX)
+                    val textY = touchTextView.top + (newY - oldY)
+                    val textWidth = textX + touchTextView.width
+                    val textHeight = textY + touchTextView.height
+                    view.layout(textX, textY, textWidth, textHeight)
+                }
             }
             MotionEvent.ACTION_DOWN -> {
             }
             MotionEvent.ACTION_UP -> {
+                if(touchFlg){
+                    touchFlg = false
+                }
             }
             else -> {
             }
@@ -134,6 +144,7 @@ class EditFragment : Fragment(), View.OnTouchListener {
 
         globalLayoutListener = OnGlobalLayoutListener {
             textView.layout(textX, textY, textX + textView.width, textY + textView.height)
+            Log.d(TAG, textView.width.toString())
             textView.viewTreeObserver.removeOnGlobalLayoutListener(globalLayoutListener)
         }
         textView.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
