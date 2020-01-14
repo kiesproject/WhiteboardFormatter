@@ -7,11 +7,9 @@
         android:id="@+id/editFragment"
         android:name="com.example.whiteboardformatter.edit_page.EditFragment"
         android:label="EditFragment" >
-
         <argument
             android:name="textData"
-            app:argType="com.example.whiteboardformatter.data.model.WhiteboardTexts"/>
-
+            app:argType="com.example.whiteboardformatter.data.model.TextForEdit"/>
         <action
             android:id="@+id/action_editFragment_to_saveFragment"
             app:destination="@id/saveFragment" />
@@ -25,6 +23,7 @@
         android:id="@+id/listFragment"
         android:name="com.example.whiteboardformatter.list_page.ListFragment"
         android:label="ListFragment" >
+
         <action
             android:id="@+id/action_listFragment_to_editFragment"
             app:destination="@id/editFragment" />
@@ -35,7 +34,7 @@
         android:label="SaveFragment" >
         <argument
             android:name="textData"
-            app:argType="com.example.whiteboardformatter.data.model.WhiteboardTexts"/>
+            app:argType="com.example.whiteboardformatter.data.model.TextForPreview"/>
         <action
             android:id="@+id/action_saveFragment_to_listFragment"
             app:destination="@id/listFragment"
