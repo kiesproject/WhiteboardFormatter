@@ -11,8 +11,9 @@ data class WhiteboardEntity constructor(
 )
 @Entity(foreignKeys = arrayOf(ForeignKey(parentTable = @Table(name="Whiteboard"),
         childTable = @Table(name="Text"),
-        parentColumn = @Column(name="Id")
-        childColumn = @Column(name="WhiteboardId")))
+        parentColumn = @Column(name="Id"),
+        childColumn = @Column(name="WhiteboardId"),
+        onDelete = ForeignKey.CASCADE))
         data class Text constructor(
                 @PrimaryKey(autoGenerate = true)
                 var id: Long = 0,
