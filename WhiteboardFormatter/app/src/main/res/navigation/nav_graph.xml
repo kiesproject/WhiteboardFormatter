@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
-    app:startDestination="@id/listFragment">
+    app:startDestination="@id/editFragment">
 
     <fragment
         android:id="@+id/editFragment"
         android:name="com.example.whiteboardformatter.edit_page.EditFragment"
         android:label="EditFragment" >
-        <argument
-            android:name="textData"
-            app:argType="com.example.whiteboardformatter.data.model.TextForEdit"/>
+
         <action
             android:id="@+id/action_editFragment_to_saveFragment"
             app:destination="@id/saveFragment" />
@@ -32,9 +30,7 @@
         android:id="@+id/saveFragment"
         android:name="com.example.whiteboardformatter.save_page.SaveFragment"
         android:label="SaveFragment" >
-        <argument
-            android:name="textData"
-            app:argType="com.example.whiteboardformatter.data.model.TextForPreview"/>
+
         <action
             android:id="@+id/action_saveFragment_to_listFragment"
             app:destination="@id/listFragment"

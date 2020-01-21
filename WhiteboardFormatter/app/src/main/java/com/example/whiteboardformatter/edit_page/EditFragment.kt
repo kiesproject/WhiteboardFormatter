@@ -1,7 +1,6 @@
 package com.example.whiteboardformatter.edit_page
 
 import android.annotation.SuppressLint
-import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
@@ -13,9 +12,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.whiteboardformatter.databinding.FragmentEditBinding
 import com.example.whiteboardformatter.save_page.SaveViewModel
 import com.example.whiteboardformatter.util.getViewModelFactory
-import com.example.whiteboardformatter.databinding.FragmentEditBinding
 import kotlinx.android.synthetic.main.fragment_edit.*
 import kotlin.math.max
 import kotlin.math.min
@@ -23,7 +22,7 @@ import kotlin.math.min
 
 class EditFragment : Fragment(), View.OnTouchListener {
     private val viewModel : EditViewModel by viewModels { getViewModelFactory() }
-    private lateinit var fragmentEditBinding:FragmentEditBinding
+    private lateinit var fragmentEditBinding: FragmentEditBinding
 
     private lateinit var globalLayoutListener: OnGlobalLayoutListener
 
