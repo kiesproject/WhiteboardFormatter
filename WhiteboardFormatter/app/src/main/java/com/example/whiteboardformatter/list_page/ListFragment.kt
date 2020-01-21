@@ -10,7 +10,7 @@ import com.example.whiteboardformatter.databinding.FragmentListBinding
 import com.example.whiteboardformatter.util.getViewModelFactory
 
 class ListFragment : Fragment(){
-//    private val viewModel : ListViewModel by viewModels { getViewModelFactory() }
+    private val viewModel : ListViewModel by viewModels { getViewModelFactory() }
     private lateinit var fragmentListBinding:FragmentListBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
