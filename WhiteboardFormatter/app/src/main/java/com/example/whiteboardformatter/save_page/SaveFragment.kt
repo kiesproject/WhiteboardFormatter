@@ -19,7 +19,7 @@ class SaveFragment :Fragment(){
 //    private val args :SaveFragmentArgs by NavArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        fragmentSaveBinding = FragmentSaveBinding.inflate(inflater,container).apply {
+        fragmentSaveBinding = FragmentSaveBinding.inflate(inflater,container,false).apply {
             viewModel = this@SaveFragment.viewModel
             lifecycleOwner = viewLifecycleOwner
         }
@@ -29,17 +29,15 @@ class SaveFragment :Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        val textData = args.textData
+//        val textArray = args.textData
 
         //仮置きデータ
         val textArray = arrayOf(
-            TextForPreview("最初のテキスト",100,200,100,200,1f,1f),
-            TextForPreview("二番目のテキスト",50,100,100,200,1f,1f)
+            TextForPreview("最初のテキスト",1000,0,100,200,1f,1f),
+            TextForPreview("二番目のテキスト",100,1000,100,200,1f,1f)
         )
 
-        textArray.sortBy { it.y }
-        textArray.sortBy { it.x }
-
+        viewModel.start(textArray)
 
     }
 }
