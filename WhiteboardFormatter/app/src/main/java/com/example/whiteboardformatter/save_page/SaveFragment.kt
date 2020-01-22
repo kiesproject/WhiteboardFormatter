@@ -14,7 +14,7 @@ class SaveFragment :Fragment(){
     private lateinit var fragmentSaveBinding: FragmentSaveBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        fragmentSaveBinding = FragmentSaveBinding.inflate(inflater,container).apply {
+        fragmentSaveBinding = FragmentSaveBinding.inflate(inflater,container, false).apply {
             viewModel = this@SaveFragment.viewModel
             lifecycleOwner = viewLifecycleOwner
         }

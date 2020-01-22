@@ -29,7 +29,7 @@ class EditFragment : Fragment(), View.OnTouchListener {
     private lateinit var textView1:TextView
     private lateinit var textView2:TextView
 
-    private var touchFlg = false
+    private var touchFlg = -1
 
     private var oldX: Int = 0
     private var oldY: Int = 0
@@ -44,7 +44,7 @@ class EditFragment : Fragment(), View.OnTouchListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        fragmentEditBinding = FragmentEditBinding.inflate(inflater,container).apply {
+        fragmentEditBinding = FragmentEditBinding.inflate(inflater,container, false).apply {
             viewModel = this@EditFragment.viewModel
             lifecycleOwner = viewLifecycleOwner
         }
@@ -54,9 +54,6 @@ class EditFragment : Fragment(), View.OnTouchListener {
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-
 
         textView1 = setText(view, "Hello", 100F, 100, 100)
 
@@ -91,16 +88,22 @@ class EditFragment : Fragment(), View.OnTouchListener {
     override fun onTouch(view: View, event: MotionEvent): Boolean {
         scaleDetector.onTouchEvent(event)
 
-        touchTextView = view as TextView
+//        touchTextView = view as TextView
 
         val newX = event.rawX.toInt()
         val newY = event.rawY.toInt()
 
         when (event.action) {
 
+            MotionEvent.ACTION_DOWN -> {
+                if(touchFlg == NOTING_SELECTED){
+                    touchTextView = view as TextView
+                    touchFlg = touchTextView.id
+                }
+            }
+
             MotionEvent.ACTION_MOVE -> {
-                if(!touchFlg){
-                    touchFlg = true
+                if(touchFlg == touchTextView.id){
                     touchTextView.performClick()
                     val textX = touchTextView.left + (newX - oldX)
                     val textY = touchTextView.top + (newY - oldY)
@@ -109,12 +112,9 @@ class EditFragment : Fragment(), View.OnTouchListener {
                     view.layout(textX, textY, textWidth, textHeight)
                 }
             }
-            MotionEvent.ACTION_DOWN -> {
-            }
+
             MotionEvent.ACTION_UP -> {
-                if(touchFlg){
-                    touchFlg = false
-                }
+                touchFlg = NOTING_SELECTED
             }
             else -> {
             }
@@ -203,5 +203,6 @@ class EditFragment : Fragment(), View.OnTouchListener {
 
     companion object {
         private const val TAG = "EditFragment"
+        private const val NOTING_SELECTED = -1
     }
 }
