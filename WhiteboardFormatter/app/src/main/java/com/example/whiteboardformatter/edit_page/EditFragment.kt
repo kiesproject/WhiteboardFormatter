@@ -15,7 +15,7 @@ class EditFragment:Fragment(){
     private lateinit var fragmentEditBinding:FragmentEditBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        fragmentEditBinding = FragmentEditBinding.inflate(inflater,container).apply {
+        fragmentEditBinding = FragmentEditBinding.inflate(inflater,container,false).apply {
             viewModel = this@EditFragment.viewModel
             lifecycleOwner = viewLifecycleOwner
         }

@@ -1,7 +1,7 @@
 package com.example.whiteboardformatter.data.repository
 
-import com.example.whiteboardformatter.data.dao.TextDao
+import com.example.whiteboardformatter.data.dao.TableDao
 
-class Repository(textDao:TextDao){
+class Repository(textDao:TableDao){
 
 }
