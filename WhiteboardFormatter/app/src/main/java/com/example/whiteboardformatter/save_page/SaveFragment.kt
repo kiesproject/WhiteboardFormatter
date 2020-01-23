@@ -17,7 +17,7 @@ class SaveFragment :Fragment(){
     private lateinit var fragmentSaveBinding: FragmentSaveBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        fragmentSaveBinding = FragmentSaveBinding.inflate(inflater,container).apply {
+        fragmentSaveBinding = FragmentSaveBinding.inflate(inflater,container,false).apply {
             viewModel = this@SaveFragment.viewModel
             lifecycleOwner = viewLifecycleOwner
         }
@@ -32,7 +32,7 @@ class SaveFragment :Fragment(){
 
         //仮置きデータ
         val textArray = arrayOf(
-            TextForPreview("最初のテキスト",1000,0,100,200,1f,1f),
+            TextForPreview("最初のテキスト",1000,0,100,200,2.2f,2.2f),
             TextForPreview("二番目のテキスト",100,1000,100,200,1f,1f)
         )
 
@@ -42,6 +42,7 @@ class SaveFragment :Fragment(){
 
     private fun setMdText(markwon:Markwon){
         viewModel.previewMdText.observe(this.viewLifecycleOwner, Observer {
+//            val testMd = "## aaaaaa\nbbbbbbb"
             val markdown = markwon.toMarkdown(it)
             markwon.setParsedMarkdown(fragmentSaveBinding.saveMdPreviewTextview,markdown)
         })
