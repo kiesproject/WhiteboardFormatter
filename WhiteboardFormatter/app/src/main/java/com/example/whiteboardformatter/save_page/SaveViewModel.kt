@@ -15,6 +15,9 @@ class SaveViewModel(private val repository: Repository) : ViewModel() {
     private var _previewText = MutableLiveData<String>("")
     val previewText : LiveData<String> = _previewText
 
+    private var _previewMdText = MutableLiveData<String>("")
+    val previewMdText : LiveData<String> = _previewText
+
     private var _textVisibility = MutableLiveData<Int>(View.VISIBLE)
     var textVisibility:LiveData<Int> = _textVisibility
 
@@ -127,4 +130,28 @@ class SaveViewModel(private val repository: Repository) : ViewModel() {
         }
         _previewMdText.value = mdResult
     }
+
+    fun onFabClicked(){         //fabがクリックされたとき
+        //dbに保存(西)
+
+
+    }
+
+    fun onShareButtonClicked(){
+        //stringファイルをtxtファイルに変換(西)
+
+        //stringファイルをmdファイルに変換(林)
+
+        //gmailを送信(林）
+
+    }
+
+    fun onCopyButtonClicked(){
+
+    }
+
+    fun backToCamera(){
+
+    }
+
 }
