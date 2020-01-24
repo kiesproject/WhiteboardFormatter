@@ -11,18 +11,13 @@ import com.example.whiteboardformatter.util.until
 class SaveViewModel(private val repository: Repository) : ViewModel() {
 
     var switchFlg = MutableLiveData<Boolean>(false)
+    private lateinit var editData : Array<TextForPreview>
 
     private var _previewText = MutableLiveData<String>("")
     val previewText : LiveData<String> = _previewText
 
     private var _previewMdText = MutableLiveData<String>("")
     val previewMdText : LiveData<String> = _previewText
-
-    private var _textVisibility = MutableLiveData<Int>(View.VISIBLE)
-    var textVisibility:LiveData<Int> = _textVisibility
-
-    private var _mdVisibility = MutableLiveData<Int>(View.INVISIBLE)
-    var mdVisibility :LiveData<Int> = _mdVisibility
   
     companion object {
         const val SHAPE = "#"
@@ -39,10 +34,8 @@ class SaveViewModel(private val repository: Repository) : ViewModel() {
 
     fun start(textArray:Array<TextForPreview>){
 
-        //デフォルトをテキストプレビューに設定
-        _textVisibility.value = View.VISIBLE
-        _mdVisibility.value = View.INVISIBLE
-
+        //DB保存用に一時的に格納
+        editData = textArray
 
         //テキストプレビューの作成
         var textResult :String = ""     //textの結果格納用
