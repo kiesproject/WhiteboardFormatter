@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:text="share"
+            android:onClick="@{viewModel.onShareButtonClicked()}"
             app:layout_constraintBottom_toTopOf="@+id/save_confirm_fab"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/save_gridline" />
@@ -30,6 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:text="Copy"
+            android:onClick="@{() -> viewModel.onCopyButtonClicked()}"
             app:layout_constraintBottom_toTopOf="@+id/save_share_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/save_gridline" />
@@ -77,6 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Back to Cam"
+            android:onClick="@{() -> viewModel.backToCamera()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/save_gridline"
             app:layout_constraintTop_toTopOf="parent" />
@@ -120,6 +123,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:clickable="true"
+            android:onClick="@{ () -> viewModel.onFabClicked()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/done_white" />
