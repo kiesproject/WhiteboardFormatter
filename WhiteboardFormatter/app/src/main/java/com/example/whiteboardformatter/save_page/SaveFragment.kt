@@ -36,7 +36,8 @@ class SaveFragment :Fragment(){
       
         //仮置きデータ
         val textArray = arrayOf(
-            TextForPreview("最初のテキスト",1000,0,100,200,2.2f,2.2f),
+            TextForPreview("最初のテキスト",1000,0,100,200,2.2f,2.2f)
+        )
 //        val textArray = args.textData
 
         viewModel.start(textArray)

@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:text="share"
-            android:onClick="@{viewModel.onShareButtonClicked()}"
+            android:onClick="@{() -> viewModel.onShareButtonClicked()}"
             app:layout_constraintBottom_toTopOf="@+id/save_confirm_fab"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/save_gridline" />
