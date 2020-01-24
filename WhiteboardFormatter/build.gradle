@@ -35,4 +35,5 @@ ext {
     fragmentVersion = '1.2.0-rc04'
     fragmentKtxVersion = '1.1.0-rc01'
     androidXTestCoreVersion = '1.2.0'
+    markwonVersion="4.2.0"
 }

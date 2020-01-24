@@ -82,6 +82,9 @@ dependencies {
     implementation "androidx.fragment:fragment-testing:1.2.0-rc04"
     implementation "androidx.test:core:$androidXTestCoreVersion"
     implementation "androidx.fragment:fragment:$fragmentVersion"
+
+    //markdown
+    implementation "io.noties.markwon:core:${markwonVersion}"
 }
 
 apply plugin: 'com.google.gms.google-services'
