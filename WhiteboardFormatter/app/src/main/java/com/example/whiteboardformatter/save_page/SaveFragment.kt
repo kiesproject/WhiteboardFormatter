@@ -7,9 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.NavArgs
-import androidx.navigation.NavArgument
-import com.example.whiteboardformatter.data.model.TextForPreview
+import androidx.navigation.fragment.navArgs
 import com.example.whiteboardformatter.databinding.FragmentSaveBinding
 import com.example.whiteboardformatter.util.getViewModelFactory
 import io.noties.markwon.Markwon
@@ -18,7 +16,7 @@ class SaveFragment :Fragment(){
     private val viewModel:SaveViewModel by viewModels { getViewModelFactory() }
     private lateinit var fragmentSaveBinding: FragmentSaveBinding
 
-//    private val args :SaveFragmentArgs by NavArgs()
+    private val args : SaveFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         fragmentSaveBinding = FragmentSaveBinding.inflate(inflater,container,false).apply {
@@ -33,12 +31,8 @@ class SaveFragment :Fragment(){
 
         val markwon = Markwon.create(view.context)
         setMdText(markwon)
-      
-        //仮置きデータ
-        val textArray = arrayOf(
-            TextForPreview("最初のテキスト",1000,0,100,200,2.2f,2.2f)
-        )
-//        val textArray = args.textData
+
+        val textArray = args.textForPreview
 
         viewModel.start(textArray)
 

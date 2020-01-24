@@ -12,7 +12,7 @@ class Repository(private val textDao:TableDao){
     fun getById(whiteboardId:Long):LiveData<List<Text>>{
         return textDao.getById(whiteboardId)
     }
-    fun insert(text:Text){
+    fun insert(text: Text){
         textDao.insert(text)
     }
     fun insert(whiteboard:WhiteboardEntity){
