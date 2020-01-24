@@ -20,5 +20,7 @@ data class Text constructor(
     var x: Int,
     var y: Int,
     var width: Int,
-    var height: Int
+    var height: Int,
+    var xScale:Float,
+    var yScale:Float
 )
