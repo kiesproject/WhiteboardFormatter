@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.example.whiteboardformatter.databinding.FragmentEditBinding
 import com.example.whiteboardformatter.util.getViewModelFactory
 
@@ -13,7 +14,7 @@ class EditFragment:Fragment(){
     private val viewModel : EditViewModel by viewModels { getViewModelFactory() }
     private lateinit var fragmentEditBinding:FragmentEditBinding
 
-
+    private val args : EditFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         fragmentEditBinding = FragmentEditBinding.inflate(inflater,container,false).apply {
@@ -25,12 +26,11 @@ class EditFragment:Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        
 
     }
 
     private fun navigateToSaveFragment(){
 
     }
-
 }
