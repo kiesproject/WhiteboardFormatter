@@ -1,8 +1,8 @@
 package com.example.whiteboardformatter.data.repository
 
-import com.example.whiteboardformatter.data.dao.TextDao
+import com.example.whiteboardformatter.data.dao.TableDao
 
-class Repository(textDao:TextDao){
+class Repository(textDao:TableDao){
     fun getAll():List<Whiteboard>{
         return textDao.getAll()
     }

@@ -41,11 +41,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
-                android:id="@+id/save_preview_linearlayout"
+            <FrameLayout
+                android:id="@+id/save_preview_frameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/save_text_preview_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.previewText}"
+                    android:textSize="18sp"
+                    android:visibility="@{viewModel.textVisibility}" />
+            </FrameLayout>
         </ScrollView>
 
         <androidx.constraintlayout.widget.Guideline
