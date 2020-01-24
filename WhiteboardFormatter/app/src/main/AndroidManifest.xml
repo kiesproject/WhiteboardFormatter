@@ -21,6 +21,10 @@
         <activity android:name=".MainActivity"
             android:screenOrientation="landscape">
         </activity>
+
+        <meta-data
+            android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+            android:value="ocr" />
     </application>
 
 </manifest>
