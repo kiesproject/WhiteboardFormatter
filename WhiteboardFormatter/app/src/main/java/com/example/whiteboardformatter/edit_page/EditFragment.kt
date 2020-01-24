@@ -12,8 +12,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.whiteboardformatter.data.model.TextForEdit
 import com.example.whiteboardformatter.databinding.FragmentEditBinding
-import com.example.whiteboardformatter.save_page.SaveViewModel
 import com.example.whiteboardformatter.util.getViewModelFactory
 import kotlinx.android.synthetic.main.fragment_edit.*
 import kotlin.math.max
@@ -21,30 +21,29 @@ import kotlin.math.min
 
 
 class EditFragment : Fragment(), View.OnTouchListener {
-    private val viewModel : EditViewModel by viewModels { getViewModelFactory() }
+    private val viewModel: EditViewModel by viewModels { getViewModelFactory() }
     private lateinit var fragmentEditBinding: FragmentEditBinding
 
     private lateinit var globalLayoutListener: OnGlobalLayoutListener
 
-    private lateinit var textView1:TextView
-    private lateinit var textView2:TextView
-
+    private lateinit var touchTextView: TextView
     private var touchFlg = -1
-
+    private lateinit var scaleDetector: ScaleGestureDetector
+    private var scaleFactor = 1f
     private var oldX: Int = 0
     private var oldY: Int = 0
 
-    private lateinit var touchTextView: TextView
-
-    private var scaleFactor = 1f
-    private lateinit var scaleDetector: ScaleGestureDetector
+    companion object {
+        private const val TAG = "EditFragment"
+        private const val NOTING_SELECTED = -1
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        fragmentEditBinding = FragmentEditBinding.inflate(inflater,container, false).apply {
+        fragmentEditBinding = FragmentEditBinding.inflate(inflater, container, false).apply {
             viewModel = this@EditFragment.viewModel
             lifecycleOwner = viewLifecycleOwner
         }
@@ -55,12 +54,17 @@ class EditFragment : Fragment(), View.OnTouchListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        textView1 = setText(view, "Hello", 100F, 100, 100)
+        //仮置きデータ
+        val textForEditArray = arrayOf(
+            TextForEdit("Hello",100, 100),
+            TextForEdit("World",500, 500)
+        )
 
-        textView2 = setText(view, "World", 150F, 500, 500)
+        textForEditArray.forEach {
+            val textView = setText(view, it.text, it.x, it.y)
 
-        textView1.setOnTouchListener(this)
-        textView2.setOnTouchListener(this)
+            textView.setOnTouchListener(this)
+        }
 
         scaleDetector = ScaleGestureDetector(context, scaleListener)
     }
@@ -88,47 +92,47 @@ class EditFragment : Fragment(), View.OnTouchListener {
     override fun onTouch(view: View, event: MotionEvent): Boolean {
         scaleDetector.onTouchEvent(event)
 
-//        touchTextView = view as TextView
+        if (touchFlg == view.id || touchFlg == NOTING_SELECTED) {
+            val newX = event.rawX.toInt()
+            val newY = event.rawY.toInt()
 
-        val newX = event.rawX.toInt()
-        val newY = event.rawY.toInt()
+            when (event.action) {
 
-        when (event.action) {
-
-            MotionEvent.ACTION_DOWN -> {
-                if(touchFlg == NOTING_SELECTED){
+                MotionEvent.ACTION_DOWN -> {
                     touchTextView = view as TextView
                     touchFlg = touchTextView.id
-                }
-            }
 
-            MotionEvent.ACTION_MOVE -> {
-                if(touchFlg == touchTextView.id){
+                }
+
+                MotionEvent.ACTION_MOVE -> {
                     touchTextView.performClick()
                     val textX = touchTextView.left + (newX - oldX)
                     val textY = touchTextView.top + (newY - oldY)
                     val textWidth = textX + touchTextView.width
                     val textHeight = textY + touchTextView.height
                     view.layout(textX, textY, textWidth, textHeight)
+
+                }
+
+                MotionEvent.ACTION_UP -> {
+                    touchFlg = NOTING_SELECTED
+                }
+                else -> {
                 }
             }
 
-            MotionEvent.ACTION_UP -> {
-                touchFlg = NOTING_SELECTED
-            }
-            else -> {
-            }
+            oldX = newX
+            oldY = newY
+
+            return true
         }
 
-        oldX = newX
-        oldY = newY
-        return true
+        return false
     }
 
     private fun setText(
         view: View,
         text: String,
-        textSize: Float,
         textX: Int,
         textY: Int
     ): TextView {
@@ -137,13 +141,13 @@ class EditFragment : Fragment(), View.OnTouchListener {
         val textView = TextView(view.context).also {
             it.id = View.generateViewId()
             it.text = text
-            it.textSize = textSize
+            it.textSize = 100F
             edit_parent_layout.addView(it)
         }
 
         globalLayoutListener = OnGlobalLayoutListener {
             textView.layout(textX, textY, textX + textView.width, textY + textView.height)
-            Log.d(TAG, textView.width.toString())
+//            Log.d(TAG, textView.width.toString())
             textView.viewTreeObserver.removeOnGlobalLayoutListener(globalLayoutListener)
         }
         textView.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
@@ -199,10 +203,5 @@ class EditFragment : Fragment(), View.OnTouchListener {
         }
 
         return textView
-    }
-
-    companion object {
-        private const val TAG = "EditFragment"
-        private const val NOTING_SELECTED = -1
     }
 }
