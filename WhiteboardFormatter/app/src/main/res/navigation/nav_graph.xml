@@ -16,6 +16,7 @@
             app:popUpTo="@+id/listFragment"
             app:popUpToInclusive="true" />
     </fragment>
+
     <fragment
         android:id="@+id/listFragment"
         android:name="com.example.whiteboardformatter.list_page.ListFragment"
@@ -25,6 +26,7 @@
             android:id="@+id/action_listFragment_to_editFragment"
             app:destination="@id/editFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/saveFragment"
         android:name="com.example.whiteboardformatter.save_page.SaveFragment"

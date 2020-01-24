@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.whiteboardformatter.databinding.FragmentEditBinding
-import com.example.whiteboardformatter.save_page.SaveViewModel
 import com.example.whiteboardformatter.util.getViewModelFactory
 
 class EditFragment:Fragment(){
     private val viewModel : EditViewModel by viewModels { getViewModelFactory() }
     private lateinit var fragmentEditBinding:FragmentEditBinding
+
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         fragmentEditBinding = FragmentEditBinding.inflate(inflater,container,false).apply {
