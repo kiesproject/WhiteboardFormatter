@@ -1,6 +1,5 @@
 package com.example.whiteboardformatter.data.repository
 
-import com.example.whiteboardformatter.data.dao.TableDao
 import androidx.lifecycle.LiveData
 import com.example.whiteboardformatter.data.dao.TableDao
 import com.example.whiteboardformatter.data.model.Text

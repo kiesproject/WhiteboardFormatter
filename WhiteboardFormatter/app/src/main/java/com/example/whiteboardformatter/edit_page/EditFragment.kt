@@ -45,7 +45,7 @@ class EditFragment : Fragment(), View.OnTouchListener {
         savedInstanceState: Bundle?
     ): View? {
         fragmentEditBinding = FragmentEditBinding.inflate(inflater, container, false).apply {
-        private val args : EditFragmentArgs by navArgs()
+            val args: EditFragmentArgs by navArgs()
 
             viewModel = this@EditFragment.viewModel
             lifecycleOwner = viewLifecycleOwner
@@ -225,7 +225,7 @@ class EditFragment : Fragment(), View.OnTouchListener {
 
     private fun navigateToSaveFragment(texts: Array<TextForPreview>) {
         val action = EditFragmentDirections
-            .actionEditFragmentToSaveFragment(/*texts*/)
+            .actionEditFragmentToSaveFragment(texts)
         findNavController().navigate(action)
     }
 }
