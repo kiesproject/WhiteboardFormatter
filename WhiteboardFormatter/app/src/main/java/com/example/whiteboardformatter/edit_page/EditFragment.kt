@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.whiteboardformatter.data.model.TextForEdit
 import com.example.whiteboardformatter.data.model.TextForPreview
+import androidx.navigation.fragment.navArgs
 import com.example.whiteboardformatter.databinding.FragmentEditBinding
 import com.example.whiteboardformatter.util.getViewModelFactory
 import kotlinx.android.synthetic.main.fragment_edit.*
@@ -44,6 +45,8 @@ class EditFragment : Fragment(), View.OnTouchListener {
         savedInstanceState: Bundle?
     ): View? {
         fragmentEditBinding = FragmentEditBinding.inflate(inflater, container, false).apply {
+        private val args : EditFragmentArgs by navArgs()
+
             viewModel = this@EditFragment.viewModel
             lifecycleOwner = viewLifecycleOwner
         }
@@ -117,7 +120,6 @@ class EditFragment : Fragment(), View.OnTouchListener {
                 MotionEvent.ACTION_DOWN -> {
                     touchTextView = view as TextView
                     touchFlg = touchTextView.id
-
                 }
 
                 MotionEvent.ACTION_MOVE -> {
@@ -220,7 +222,6 @@ class EditFragment : Fragment(), View.OnTouchListener {
 
         return textView
     }
-
 
     private fun navigateToSaveFragment(texts: Array<TextForPreview>) {
         val action = EditFragmentDirections

@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
+
+        <import type="android.view.View"/>
         <variable
             name="viewModel"
             type="com.example.whiteboardformatter.save_page.SaveViewModel" />
@@ -18,6 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:text="share"
+            android:onClick="@{() -> viewModel.onShareButtonClicked()}"
             app:layout_constraintBottom_toTopOf="@+id/save_confirm_fab"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/save_gridline" />
@@ -26,8 +29,9 @@
             android:id="@+id/save_copy_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="8dp"
             android:text="Copy"
+            android:onClick="@{() -> viewModel.onCopyButtonClicked()}"
             app:layout_constraintBottom_toTopOf="@+id/save_share_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/save_gridline" />
@@ -41,11 +45,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
-                android:id="@+id/save_preview_linearlayout"
+            <FrameLayout
+                android:id="@+id/save_preview_framelayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:layout_marginLeft="8dp">
+
+                <TextView
+                    android:id="@+id/save_text_preview_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.previewText}"
+                    android:visibility='@{viewModel.switchFlg ? View.GONE : View.VISIBLE}' />
+
+                <TextView
+                    android:id="@+id/save_md_preview_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility='@{viewModel.switchFlg ? View.VISIBLE : View.GONE}' />
+            </FrameLayout>
         </ScrollView>
 
         <androidx.constraintlayout.widget.Guideline
@@ -61,29 +79,43 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Back to Cam"
+            android:onClick="@{() -> viewModel.backToCamera()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/save_gridline"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Switch
-            android:id="@+id/save_file_type_switch"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
             app:layout_constraintBottom_toTopOf="@+id/save_copy_button"
-            app:layout_constraintEnd_toEndOf="@+id/save_copy_button"
-            app:layout_constraintStart_toStartOf="@+id/save_copy_button" />
+            app:layout_constraintEnd_toEndOf="@+id/save_back_button"
+            app:layout_constraintStart_toStartOf="@+id/save_back_button"
+            app:layout_constraintTop_toBottomOf="@+id/save_back_button">
 
-        <TextView
-            android:id="@+id/save_file_type_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/save_file_type_switch"
-            app:layout_constraintEnd_toEndOf="@+id/save_file_type_switch"
-            app:layout_constraintStart_toStartOf="@+id/save_file_type_switch"
-            tools:text="mdファイル" />
 
+            <Switch
+                android:id="@+id/save_file_type_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:checked="@={viewModel.switchFlg}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/save_file_type_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text='@{viewModel.switchFlg ? "mdファイル" : "txtファイル"}'
+                app:layout_constraintBottom_toTopOf="@+id/save_file_type_switch"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="txtファイル" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/save_confirm_fab"
             android:layout_width="wrap_content"
@@ -91,6 +123,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:clickable="true"
+            android:onClick="@{ () -> viewModel.onFabClicked()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/done_white" />
