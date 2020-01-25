@@ -1,18 +1,17 @@
 package com.example.whiteboardformatter.edit_page
 
 import android.annotation.SuppressLint
-import android.util.Log
+import android.os.Bundle
 import android.view.*
+import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintSet
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.whiteboardformatter.data.model.TextForEdit
+import com.example.whiteboardformatter.data.model.TextForPreview
 import com.example.whiteboardformatter.databinding.FragmentEditBinding
 import com.example.whiteboardformatter.util.getViewModelFactory
 import kotlinx.android.synthetic.main.fragment_edit.*
@@ -24,10 +23,11 @@ class EditFragment : Fragment(), View.OnTouchListener {
     private val viewModel: EditViewModel by viewModels { getViewModelFactory() }
     private lateinit var fragmentEditBinding: FragmentEditBinding
 
-    private lateinit var globalLayoutListener: OnGlobalLayoutListener
-
     private lateinit var touchTextView: TextView
     private var touchFlg = -1
+
+    private val textViewArrayList = ArrayList<TextView>()
+    private val textForPreviewArrayList = ArrayList<TextForPreview>()
     private lateinit var scaleDetector: ScaleGestureDetector
     private var scaleFactor = 1f
     private var oldX: Int = 0
@@ -56,22 +56,39 @@ class EditFragment : Fragment(), View.OnTouchListener {
 
         //仮置きデータ
         val textForEditArray = arrayOf(
-            TextForEdit("Hello",100, 100),
-            TextForEdit("World",500, 500)
+            TextForEdit("Hello", 100, 100),
+            TextForEdit("HelloWorld", 500, 500)
         )
 
         textForEditArray.forEach {
-            val textView = setText(view, it.text, it.x, it.y)
-
-            textView.setOnTouchListener(this)
+            textViewArrayList.add(setText(view, it.text, it.x, it.y).also { view ->
+                view.setOnTouchListener(this)
+            })
         }
 
         scaleDetector = ScaleGestureDetector(context, scaleListener)
+
+        fragmentEditBinding.editConfirmFab.setOnClickListener {
+
+            textViewArrayList.forEach {
+                it.apply {
+                    textForPreviewArrayList.add(
+                        TextForPreview(
+                            text = text.toString(),
+                            x = x.toInt(),
+                            y = y.toInt(),
+                            height = height,
+                            width = width,
+                            scaleX = scaleX,
+                            scaleY = scaleY
+                        )
+                    )
+                }
+            }
+            navigateToSaveFragment(textForPreviewArrayList.toTypedArray())
+        }
     }
 
-//    private fun navigateToSaveFragment(){
-//
-//    }
 
     private val scaleListener = object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
 
@@ -83,7 +100,6 @@ class EditFragment : Fragment(), View.OnTouchListener {
 
             touchTextView.scaleX = scaleFactor
             touchTextView.scaleY = scaleFactor
-            Log.d(TAG, touchTextView.scaleX.toString())
 
             return true
         }
@@ -137,17 +153,17 @@ class EditFragment : Fragment(), View.OnTouchListener {
         textY: Int
     ): TextView {
 
+        lateinit var globalLayoutListener: OnGlobalLayoutListener
 
         val textView = TextView(view.context).also {
             it.id = View.generateViewId()
             it.text = text
-            it.textSize = 100F
+            it.textSize = 50F
             edit_parent_layout.addView(it)
         }
 
         globalLayoutListener = OnGlobalLayoutListener {
             textView.layout(textX, textY, textX + textView.width, textY + textView.height)
-//            Log.d(TAG, textView.width.toString())
             textView.viewTreeObserver.removeOnGlobalLayoutListener(globalLayoutListener)
         }
         textView.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
@@ -203,5 +219,12 @@ class EditFragment : Fragment(), View.OnTouchListener {
         }
 
         return textView
+    }
+
+
+    private fun navigateToSaveFragment(texts: Array<TextForPreview>) {
+        val action = EditFragmentDirections
+            .actionEditFragmentToSaveFragment(/*texts*/)
+        findNavController().navigate(action)
     }
 }
