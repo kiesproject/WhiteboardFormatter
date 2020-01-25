@@ -19,6 +19,7 @@ class SaveFragment :Fragment(){
     private val args : SaveFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
         fragmentSaveBinding = FragmentSaveBinding.inflate(inflater,container,false).apply {
             viewModel = this@SaveFragment.viewModel
             lifecycleOwner = viewLifecycleOwner
