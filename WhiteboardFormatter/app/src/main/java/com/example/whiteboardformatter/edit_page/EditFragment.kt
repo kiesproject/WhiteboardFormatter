@@ -14,6 +14,7 @@ import com.example.whiteboardformatter.data.model.TextForEdit
 import com.example.whiteboardformatter.data.model.TextForPreview
 import androidx.navigation.fragment.navArgs
 import com.example.whiteboardformatter.databinding.FragmentEditBinding
+import com.example.whiteboardformatter.save_page.SaveFragmentArgs
 import com.example.whiteboardformatter.util.getViewModelFactory
 import kotlinx.android.synthetic.main.fragment_edit.*
 import kotlin.math.max
@@ -34,6 +35,9 @@ class EditFragment : Fragment(), View.OnTouchListener {
     private var oldX: Int = 0
     private var oldY: Int = 0
 
+    private val args : EditFragmentArgs by navArgs()
+
+
     companion object {
         private const val TAG = "EditFragment"
         private const val NOTING_SELECTED = -1
@@ -45,8 +49,6 @@ class EditFragment : Fragment(), View.OnTouchListener {
         savedInstanceState: Bundle?
     ): View? {
         fragmentEditBinding = FragmentEditBinding.inflate(inflater, container, false).apply {
-            val args: EditFragmentArgs by navArgs()
-
             viewModel = this@EditFragment.viewModel
             lifecycleOwner = viewLifecycleOwner
         }
@@ -58,10 +60,12 @@ class EditFragment : Fragment(), View.OnTouchListener {
         super.onViewCreated(view, savedInstanceState)
 
         //仮置きデータ
-        val textForEditArray = arrayOf(
-            TextForEdit("Hello", 100, 100),
-            TextForEdit("HelloWorld", 500, 500)
-        )
+//        val textForEditArray = arrayOf(
+//            TextForEdit("Hello", 100, 100),
+//            TextForEdit("HelloWorld", 500, 500)
+//        )
+
+        val textForEditArray = args.textForEdit
 
         textForEditArray.forEach {
             textViewArrayList.add(setText(view, it.text, it.x, it.y).also { view ->
