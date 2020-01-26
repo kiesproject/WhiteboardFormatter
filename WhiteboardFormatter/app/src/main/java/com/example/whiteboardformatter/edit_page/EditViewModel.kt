@@ -4,5 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.example.whiteboardformatter.data.repository.Repository
 
 class EditViewModel (private val repository: Repository):ViewModel(){
-
+    companion object{
+        const val TAG = "EditViewModel"
+    }
 }

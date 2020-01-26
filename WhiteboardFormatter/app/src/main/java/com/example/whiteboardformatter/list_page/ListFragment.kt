@@ -27,6 +27,7 @@ class ListFragment : Fragment(){
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
         fragmentListBinding = FragmentListBinding.inflate(inflater,container,false).apply {
             viewModel = this@ListFragment.viewModel
             lifecycleOwner = viewLifecycleOwner
