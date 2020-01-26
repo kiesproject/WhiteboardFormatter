@@ -33,11 +33,6 @@ class SaveFragment :Fragment(){
         val markwon = Markwon.create(view.context)
         setMdText(markwon)
 
-        //仮置きデータ
-//        val textArray = arrayOf(
-//            TextForPreview("最初のテキスト",1000,0,100,200,2.2f,2.2f)
-//        )
-
         val textArray = args.textForPreview
 
         viewModel.start(textArray)
