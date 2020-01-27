@@ -1,27 +1,30 @@
 package com.example.whiteboardformatter.edit_page
 
 import android.annotation.SuppressLint
+import android.graphics.Point
+import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.*
-import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.whiteboardformatter.data.model.TextForEdit
 import com.example.whiteboardformatter.data.model.TextForPreview
-import androidx.navigation.fragment.navArgs
 import com.example.whiteboardformatter.databinding.FragmentEditBinding
-import com.example.whiteboardformatter.save_page.SaveFragmentArgs
 import com.example.whiteboardformatter.util.getViewModelFactory
 import kotlinx.android.synthetic.main.fragment_edit.*
 import kotlin.math.max
 import kotlin.math.min
 
 
-class EditFragment : Fragment(), View.OnTouchListener {
+class EditFragment : Fragment(),
+    View.OnTouchListener/*, ViewTreeObserver.OnWindowFocusChangeListener*/ {
     private val viewModel: EditViewModel by viewModels { getViewModelFactory() }
     private lateinit var fragmentEditBinding: FragmentEditBinding
 
@@ -35,7 +38,9 @@ class EditFragment : Fragment(), View.OnTouchListener {
     private var oldX: Int = 0
     private var oldY: Int = 0
 
-    private val args : EditFragmentArgs by navArgs()
+    private val naturalTextWidthArrayList = ArrayList<Int>()
+
+    private val args: EditFragmentArgs by navArgs()
 
 
     companion object {
@@ -59,18 +64,31 @@ class EditFragment : Fragment(), View.OnTouchListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //仮置きデータ
-//        val textForEditArray = arrayOf(
-//            TextForEdit("Hello", 100, 100),
-//            TextForEdit("HelloWorld", 500, 500)
-//        )
+//        仮置きデータ
+        val textForEditArray = arrayOf(
+            TextForEdit("H", 0, 0),
+            TextForEdit("E", 0, 0),
+            TextForEdit("l", 0, 0),
+            TextForEdit("HelloWorld", 0, 0)
+        )
 
-        val textForEditArray = args.textForEdit
+//        val textForEditArray = args.textForEdit
+
+        val textSize = getTextSize(textForEditArray)
+        Log.d(TAG, "返り値 $textSize")
 
         textForEditArray.forEach {
-            textViewArrayList.add(setText(view, it.text, it.x, it.y).also { view ->
+            textViewArrayList.add(setText(view, it.text, textSize, it.x, it.y).also { view ->
                 view.setOnTouchListener(this)
             })
+        }
+
+        if(naturalTextWidthArrayList.isEmpty()){
+            Log.d(TAG, "Empty")
+        }else{
+            naturalTextWidthArrayList.forEach {
+                Log.d(TAG, "width is $it")
+            }
         }
 
         scaleDetector = ScaleGestureDetector(context, scaleListener)
@@ -96,6 +114,26 @@ class EditFragment : Fragment(), View.OnTouchListener {
         }
     }
 
+    private fun getTextSize(texts: Array<TextForEdit>): Float{
+        val size = Rect()
+        activity!!.window.decorView.getWindowVisibleDisplayFrame(size)
+        size.width()
+        Log.d(TAG, "画面横 : ${size.width()} / 画面縦 : ${size.height()}")
+        //最も文字数の多い行を探す。
+        val maxLength = texts.maxBy{ it.text.length}!!.text.length
+        Log.d(TAG, "文字数 : $maxLength")
+        //使用可能な領域(ScreenSizeの80%)/文字数 = 1文字当たりのpixel(textSize)
+        val textSizeByWidth = (size.width() * 0.8 / maxLength)
+        //行の数
+        val numberOfTexts = texts.size
+        Log.d(TAG, "行数 : $numberOfTexts")
+        //使用可能な領域 / 文字数*1.3(行の間隔) = 1文字当たりのpixel(縦方向)
+        val textSizeByHeight = size.height() * 0.8 /(numberOfTexts*1.3)
+        Log.d(TAG, "sizeWidth : $textSizeByWidth / sizeHeight : $textSizeByHeight")
+        Log.d(TAG, "小さい方 : ${min(textSizeByWidth,textSizeByHeight)}")
+
+        return min(textSizeByWidth,textSizeByHeight).toFloat()
+    }
 
     private val scaleListener = object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
 
@@ -155,6 +193,7 @@ class EditFragment : Fragment(), View.OnTouchListener {
     private fun setText(
         view: View,
         text: String,
+        textSize: Float,
         textX: Int,
         textY: Int
     ): TextView {
@@ -164,11 +203,14 @@ class EditFragment : Fragment(), View.OnTouchListener {
         val textView = TextView(view.context).also {
             it.id = View.generateViewId()
             it.text = text
-            it.textSize = 50F
+            it.textSize = textSize
             edit_parent_layout.addView(it)
         }
 
+
         globalLayoutListener = OnGlobalLayoutListener {
+            Log.d(TAG, "${textView.text} : ${textView.width}")
+            naturalTextWidthArrayList.add(textView.width)
             textView.layout(textX, textY, textX + textView.width, textY + textView.height)
             textView.viewTreeObserver.removeOnGlobalLayoutListener(globalLayoutListener)
         }
