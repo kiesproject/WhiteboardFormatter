@@ -17,7 +17,13 @@ class SaveViewModel(private val repository: Repository) : ViewModel() {
     val previewText : LiveData<String> = _previewText
 
     private var _previewMdText = MutableLiveData<String>("")
-    val previewMdText : LiveData<String> = _previewText
+    val previewMdText : LiveData<String> = _previewMdText
+
+    private var _textVisibility = MutableLiveData<Int>(View.VISIBLE)
+    var textVisibility:LiveData<Int> = _textVisibility
+
+    private var _mdVisibility = MutableLiveData<Int>(View.INVISIBLE)
+    var mdVisibility :LiveData<Int> = _mdVisibility
   
     companion object {
         const val SHAPE = "#"
@@ -44,7 +50,7 @@ class SaveViewModel(private val repository: Repository) : ViewModel() {
         textArray.sortBy { it.y }
 
         textArray.forEach {
-            if(beforeText.y+beforeText.height*0.5f < it.y){     //高さを判断して、改行をresultに加える
+            if(beforeText.y+beforeText.height*0.5f < it.y && textResult.isNotBlank()){     //高さを判断して、改行をresultに加える
                 val spaceHeight = it.y -beforeText.y + beforeText.height    //前のテキストとの縦方向の距離を求める
                 val numberOfIndention =spaceHeight/it.height                //改行数
                 for(i in 0 until numberOfIndention){
@@ -81,7 +87,7 @@ class SaveViewModel(private val repository: Repository) : ViewModel() {
                 val spaceHeight =
                     it.y - beforeMdText.y + beforeMdText.height    //前のテキストとの縦方向の距離を求める
                 val numberOfIndention = spaceHeight / it.height                //改行数
-                for (i in 0 until numberOfIndention) {
+                if (numberOfIndention > 0) {
                     mdResult += "\n"
                 }
                 beforeMdText = beforeMdText.copy(
@@ -98,8 +104,9 @@ class SaveViewModel(private val repository: Repository) : ViewModel() {
                         val index = FONT_SIZE_RANGE.indexOf(range)
                         if (index != 3) {
                             for (i in 0..index) {
-                                mdResult += (SHAPE + SPACE)
+                                mdResult += SHAPE
                             }
+                            mdResult += SPACE
                         }
                         break
                     }
@@ -112,7 +119,7 @@ class SaveViewModel(private val repository: Repository) : ViewModel() {
                         spaceWidth / (it.width / it.text.length)
                     } else 0
                 //SPACEの追加
-                for (i in 0 until numberOfSpaces) {
+                if (numberOfSpaces > 0) {
                     mdResult += SPACE
                 }
             }

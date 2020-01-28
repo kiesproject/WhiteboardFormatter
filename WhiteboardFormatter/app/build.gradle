@@ -5,9 +5,10 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'kotlin-kapt'
 
+
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.1"
+    buildToolsVersion '29.0.1'
     defaultConfig {
         applicationId "com.example.whiteboardformatter"
         minSdkVersion 21
@@ -85,6 +86,9 @@ dependencies {
 
     //markdown
     implementation "io.noties.markwon:core:${markwonVersion}"
-}
 
+    //firebase MLKit
+    implementation 'com.google.firebase:firebase-ml-vision:24.0.1'
+}
 apply plugin: 'com.google.gms.google-services'
+
