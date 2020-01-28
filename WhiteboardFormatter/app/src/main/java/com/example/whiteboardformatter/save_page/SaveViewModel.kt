@@ -133,9 +133,8 @@ class SaveViewModel(private val repository: Repository) : ViewModel() {
     }
 
     fun onFabClicked(){         //fabがクリックされたとき
-        //dbに保存(西)
-
-
+        val intent = Intent(this,Repository::class.java)
+        startActivityForResult(intent,Constant.ADD_TASK_REQUEST_CODE)
     }
 
     fun onShareButtonClicked(){
