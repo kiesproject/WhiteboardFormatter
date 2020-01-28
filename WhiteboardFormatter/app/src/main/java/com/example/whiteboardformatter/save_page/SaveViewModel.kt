@@ -131,9 +131,16 @@ class SaveViewModel(private val repository: Repository) : ViewModel() {
         _previewMdText.value = mdResult
     }
 
-    fun onFabClicked(){         //fabがクリックされたとき
-        val intent = Intent(this,Repository::class.java)
-        startActivityForResult(intent,Constant.ADD_TASK_REQUEST_CODE)
+    fun onFabClicked(){
+        viewModelScope.launch(Dispatchers.IO) {
+            val id = repository.insert(WhiteboardEntity())
+            for (editDatum in editData) {
+                repository.insert((Text(whiteboardId = Id,text = editDatum.text,x = editDatum.x,y = editDatum.y
+                        ,height = editDatum.height,width = editDatum.width)))
+            }
+
+
+        }
     }
 
     fun onShareButtonClicked(){

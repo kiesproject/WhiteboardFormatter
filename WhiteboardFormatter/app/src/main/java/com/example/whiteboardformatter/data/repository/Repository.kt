@@ -15,8 +15,8 @@ class Repository(private val textDao:TableDao){
     fun insert(text: Text){
         textDao.insert(text)
     }
-    fun insert(whiteboard:WhiteboardEntity){
-        textDao.insert(whiteboard)
+    fun insert(whiteboard:WhiteboardEntity):Long{
+        return textDao.insert(whiteboard)
     }
     fun update(text:Text){
         textDao.update(text)
